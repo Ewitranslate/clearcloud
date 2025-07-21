@@ -13,3 +13,8 @@
     "next-auth": "^4.24.3"
   }
 }
+"devDependencies": {
+  "typescript": "^5.3.3",
+  "@types/react": "^18.2.0",
+  "@types/node": "^20.4.0"
+}
