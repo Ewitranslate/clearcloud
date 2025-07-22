@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
@@ -13,11 +13,16 @@ export default function Home() {
     }
   }, [session]);
 
+  if (status === "loading") {
+    return <p>Загрузка...</p>;
+  }
+
   if (!session) {
     return (
       <main>
         <h1>Добро пожаловать в ClearCloud</h1>
         <button onClick={() => signIn("google")}>Войти через Google</button>
+        <button onClick={() => signIn("github")}>Войти через GitHub</button>
       </main>
     );
   }
@@ -25,10 +30,17 @@ export default function Home() {
   return (
     <main>
       <h2>Привет, {session.user?.name}</h2>
+      <p>Email: {session.user?.email}</p>
       <button onClick={() => signOut()}>Выйти</button>
 
       <h3>Фото за последние 7 дней:</h3>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "10px" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+          gap: "10px",
+        }}
+      >
         {photos.map((item: any) => (
           <img
             key={item.id}
