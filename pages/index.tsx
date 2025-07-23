@@ -3,13 +3,26 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Home() {
   const { data: session, status } = useSession();
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState<any[]>([]);
 
   useEffect(() => {
     if (session?.accessToken) {
       fetch(`/api/photos?token=${session.accessToken}`)
         .then((res) => res.json())
-        .then((data) => setPhotos(data));
+        .then((data) => {
+          if (Array.isArray(data)) {
+            setPhotos(data);
+          } else if (Array.isArray(data.mediaItems)) {
+            setPhotos(data.mediaItems);
+          } else if (Array.isArray(data.photos)) {
+            setPhotos(data.photos);
+          } else {
+            console.error("Ожидался массив, но получено:", data);
+          }
+        })
+        .catch((err) => {
+          console.error("Ошибка при получении фото:", err);
+        });
     }
   }, [session]);
 
@@ -45,7 +58,7 @@ export default function Home() {
           <img
             key={item.id}
             src={`${item.baseUrl}=w300-h300`}
-            alt={item.filename}
+            alt={item.filename || "photo"}
             style={{ width: "100%", borderRadius: "8px" }}
           />
         ))}
