@@ -1,6 +1,7 @@
-import { getToken } from "next-auth/jwt";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { getToken } from 'next-auth/jwt';
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const token = await getToken({ req });
   res.status(200).json({ accessToken: token?.accessToken });
 }
