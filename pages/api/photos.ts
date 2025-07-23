@@ -16,15 +16,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const data = await response.json();
 
+    console.log("📦 Ответ от Google Photos API:", JSON.stringify(data, null, 2)); // ✅ лог всего ответа
+
     if (!response.ok) {
-      console.error('Google Photos API error:', data); // 👈 Лог ошибки
+      console.error('Google Photos API error:', data);
       return res.status(500).json({ error: 'Failed to fetch media items from Google Photos' });
     }
 
     const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
     const items = (data.mediaItems || []).filter((item: any) => {
       return new Date(item.mediaMetadata?.creationTime).getTime() >= sevenDaysAgo;
     });
+
+    console.log("🖼️ Фото за последние 7 дней:", items); // ✅ лог отфильтрованных фото
 
     res.status(200).json(items);
   } catch (error) {
