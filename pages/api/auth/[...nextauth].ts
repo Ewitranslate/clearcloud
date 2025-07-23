@@ -26,6 +26,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account }) {
       if (account?.access_token) {
+console.log("Scopes:", account.scope);
         token.accessToken = account.access_token;
       }
       return token;
