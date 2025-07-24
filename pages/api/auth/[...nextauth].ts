@@ -23,10 +23,14 @@ export const authOptions: NextAuthOptions = {
       },
     }),
     YandexProvider({
-      clientId: process.env.YANDEX_CLIENT_ID!,
-      clientSecret: process.env.YANDEX_CLIENT_SECRET!,
-    }), // 💡 добавили корректно
-  ],
+  clientId: process.env.YANDEX_CLIENT_ID!,
+  clientSecret: process.env.YANDEX_CLIENT_SECRET!,
+  authorization: {
+    params: {
+      scope: "login:email login:info",
+    },
+  },
+}),
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, account }) {
