@@ -8,6 +8,13 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "typeRoots": ["./types", "./node_modules/@types"]
-  }
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "isolatedModules": true,
+    "noEmit": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types"],
+  "exclude": ["node_modules"]
 }
