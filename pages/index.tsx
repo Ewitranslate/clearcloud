@@ -14,10 +14,8 @@ export default function Home() {
             setPhotos(data);
           } else if (Array.isArray(data.mediaItems)) {
             setPhotos(data.mediaItems);
-          } else if (Array.isArray(data.photos)) {
-            setPhotos(data.photos);
           } else {
-            console.error("Ожидался массив, но получено:", data);
+            console.error("Неизвестный формат данных:", data);
           }
         })
         .catch((err) => {
@@ -36,6 +34,7 @@ export default function Home() {
         <h1>Добро пожаловать в ClearCloud</h1>
         <button onClick={() => signIn("google")}>Войти через Google</button>
         <button onClick={() => signIn("github")}>Войти через GitHub</button>
+        <button onClick={() => signIn("yandex")}>Войти через Яндекс</button>
       </main>
     );
   }
