@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import YandexProvider from "next-auth/providers/yandex";
+import YandexProvider from "next-auth/providers/yandex"; // 💡 ВАЖНО: импорт наверху
 import type { NextAuthOptions } from "next-auth";
 
 export const authOptions: NextAuthOptions = {
@@ -17,14 +17,15 @@ export const authOptions: NextAuthOptions = {
         params: {
           prompt: "consent",
           access_type: "offline",
-          scope: "openid email profile https://www.googleapis.com/auth/photoslibrary.readonly",
+          scope:
+            "openid email profile https://www.googleapis.com/auth/photoslibrary.readonly",
         },
       },
     }),
     YandexProvider({
       clientId: process.env.YANDEX_CLIENT_ID!,
       clientSecret: process.env.YANDEX_CLIENT_SECRET!,
-    }),
+    }), // 💡 добавили корректно
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
@@ -41,5 +42,5 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
-console.log("YANDEX_CLIENT_ID:", process.env.YANDEX_CLIENT_ID);
+
 export default NextAuth(authOptions);
