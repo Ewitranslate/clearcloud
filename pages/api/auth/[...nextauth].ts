@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import YandexProvider from "next-auth/providers/yandex"; // 💡 ВАЖНО: импорт наверху
+import YandexProvider from "next-auth/providers/yandex";
 import type { NextAuthOptions } from "next-auth";
 
 export const authOptions: NextAuthOptions = {
@@ -23,15 +23,18 @@ export const authOptions: NextAuthOptions = {
       },
     }),
     YandexProvider({
-  clientId: process.env.YANDEX_CLIENT_ID!,
-  clientSecret: process.env.YANDEX_CLIENT_SECRET!,
-  authorization: {
-    params: {
-      scope: "login:email login:info",
-    },
-  },
-}),
+      clientId: process.env.YANDEX_CLIENT_ID!,
+      clientSecret: process.env.YANDEX_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          scope: "login:email login:info",
+        },
+      },
+    }),
+  ],
+
   secret: process.env.NEXTAUTH_SECRET,
+
   callbacks: {
     async jwt({ token, account }) {
       if (account?.access_token) {
