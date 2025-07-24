@@ -41,5 +41,5 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
-
+console.log("YANDEX_CLIENT_ID:", process.env.YANDEX_CLIENT_ID);
 export default NextAuth(authOptions);
