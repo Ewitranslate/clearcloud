@@ -20,7 +20,15 @@ export const authOptions: NextAuthOptions = {
     },
   },
 }),
+    import YandexProvider from "next-auth/providers/yandex";
 
+providers: [
+  // другие провайдеры...
+  YandexProvider({
+    clientId: process.env.YANDEX_CLIENT_ID!,
+    clientSecret: process.env.YANDEX_CLIENT_SECRET!,
+  }),
+],
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
