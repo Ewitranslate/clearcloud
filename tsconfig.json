@@ -13,7 +13,9 @@
     "resolveJsonModule": true,
     "jsx": "preserve",
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types"],
   "exclude": ["node_modules"]
