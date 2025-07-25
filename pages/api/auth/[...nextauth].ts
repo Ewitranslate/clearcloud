@@ -25,6 +25,11 @@ export const authOptions: NextAuthOptions = {
     YandexProvider({
       clientId: process.env.YANDEX_CLIENT_ID!,
       clientSecret: process.env.YANDEX_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          scope: "login:email login:info",
+        },
+      },
     }),
   ],
 
@@ -33,15 +38,14 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account }) {
       if (account?.access_token) {
-        console.log("Scopes:", account.scope);
         token.accessToken = account.access_token;
-        token.provider = account.provider;
+        token.provider = account.provider; // сохраняем провайдер
       }
       return token;
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken as string;
-      session.provider = token.provider;
+      session.provider = token.provider as string;
       return session;
     },
   },
