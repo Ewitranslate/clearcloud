@@ -3,8 +3,9 @@ import { getToken } from "next-auth/jwt";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const token = await getToken({ req });
-  if (!token?.accessToken) {
-    return res.status(401).json({ error: "Not authenticated" });
+
+  if (!token?.accessToken || token.provider !== "yandex") {
+    return res.status(401).json({ error: "Not authenticated with Yandex" });
   }
 
   try {
@@ -15,8 +16,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
 
     const data = await response.json();
-    res.status(200).json(data.items || []);
+
+    // Проверка наличия поля items
+    if (!Array.isArray(data.items)) {
+      console.error("Yandex API response:", data);
+      return res.status(500).json({ error: "Invalid response from Yandex Disk" });
+    }
+
+    res.status(200).json(data.items);
   } catch (error) {
+    console.error("Fetch error:", error);
     res.status(500).json({ error: "Failed to fetch files" });
   }
 }
